@@ -9,8 +9,6 @@
     "test": "jest --forceExit --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:api": "node test-backend.js",
-    "test:simple": "node test-api.js",
-        "test:quick": "node quick-test.js",
 
     "seed": "node seeds/seed.js"
   },

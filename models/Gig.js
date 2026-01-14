@@ -372,12 +372,12 @@ gigSchema.methods.canBeDeleted = function() {
 };
 
 // Get days remaining until deadline
-gigSchema.methods.getDaysRemaining = function() {
-    const now = new Date();
-    const deadline = this.deadline;
-    const diffTime = Math.abs(deadline - now);
+gigSchema.methods.getDaysRemaining = function () {
+    if (!this.deadline) return null;
+    const diffTime = this.deadline - new Date();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 };
+
 
 // Check if gig is urgent (less than 3 days remaining)
 gigSchema.virtual('isUrgent').get(function() {
@@ -390,14 +390,15 @@ gigSchema.virtual('formattedBudget').get(function() {
 });
 
 // Get formatted deadline
-gigSchema.virtual('formattedDeadline').get(function() {
-    const options = { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
-    };
-    return this.deadline.toLocaleDateString('en-US', options);
+gigSchema.virtual('formattedDeadline').get(function () {
+    if (!this.deadline) return null;
+    return this.deadline.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
 });
+
 
 // Increment view count
 gigSchema.methods.incrementViews = async function() {

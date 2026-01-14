@@ -295,12 +295,16 @@ exports.hireFreelancer = catchAsync(async (req, res, next) => {
 });
 
 // ✅ GET /api/bids/my/bids - Get current user's bids (Additional useful endpoint)
+// ✅ GET /api/bids/my/bids - Get current user's bids (Additional useful endpoint)
 exports.getMyBids = catchAsync(async (req, res, next) => {
     const { status, page = 1, limit = 10 } = req.query;
     const skip = (page - 1) * limit;
 
+    // ✅ FIX: Convert req.user.id to ObjectId
+    const freelancerObjectId = new mongoose.Types.ObjectId(req.user.id);
+
     // Build query
-    const query = { freelancerId: req.user.id };
+    const query = { freelancerId: freelancerObjectId };
     if (status && ['pending', 'hired', 'rejected'].includes(status)) {
         query.status = status;
     }
@@ -323,14 +327,15 @@ exports.getMyBids = catchAsync(async (req, res, next) => {
     const total = await Bid.countDocuments(query);
 
     // Calculate statistics
-    const allBids = await Bid.find({ freelancerId: req.user.id });
+    const allBids = await Bid.find({ freelancerId: freelancerObjectId });
     const stats = {
         total: allBids.length,
         pending: allBids.filter(b => b.status === 'pending').length,
         hired: allBids.filter(b => b.status === 'hired').length,
         rejected: allBids.filter(b => b.status === 'rejected').length,
-        successRate: allBids.length > 0 ? 
-            ((allBids.filter(b => b.status === 'hired').length / allBids.length) * 100).toFixed(1) : 0,
+        successRate: allBids.length > 0
+            ? ((allBids.filter(b => b.status === 'hired').length / allBids.length) * 100).toFixed(1)
+            : 0,
         totalEarned: allBids
             .filter(b => b.status === 'hired')
             .reduce((sum, bid) => sum + bid.price, 0)
@@ -351,6 +356,7 @@ exports.getMyBids = catchAsync(async (req, res, next) => {
         }
     });
 });
+
 
 // ✅ GET /api/bids/:id - Get single bid
 exports.getBid = catchAsync(async (req, res, next) => {

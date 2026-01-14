@@ -65,3 +65,42 @@ git clone https://github.com/Sanskar225/backend-GIG.git
 cd backend-GIG
 npm install
 npm run dev
+📁 Project Structure
+backend-GIG/
+├── controllers/
+├── models/
+├── routes/
+├── middleware/
+├── utils/
+├── tests/
+├── server.js
+└── package.json
+
+🧪 Testing
+npm test
+
+
+Includes API and integration tests to ensure stability and correctness.
+
+🚢 Deployment
+
+Environment-based configuration
+
+Stateless REST API design
+
+Compatible with cloud platforms, PM2, and Docker
+
+Designed for scalability and maintainability
+
+🎯 Purpose of This Project
+
+This project demonstrates the ability to design and implement a complete backend system beyond basic CRUD operations, with emphasis on security, real-world workflows, and scalable architecture.
+
+👤 Author
+
+Sanskar Sinha
+Backend / Full-Stack Developer
+
+GitHub: https://github.com/Sanskar225
+
+Email: sanskarsinha225@gmail.com
